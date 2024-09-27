@@ -6,19 +6,48 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
+    
+    @StateObject var viewModel = ViewModel()
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @FetchRequest(
+        sortDescriptors: [],
+        animation: .default
+    )
+    var movies: FetchedResults<Movie>
+    
+    let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            VStack {
+                Text("Popular")
+                    .font(.title)
+                
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        ForEach(movies) { movie in
+                            MoviePosterView(posterPath: movie.posterPath ?? "")
+                                .frame(height: 150)
+                        }
+                    }
+                    .padding()
+                }
+            }
         }
-        .padding()
+        .onAppear {
+            DispatchQueue.main.async {
+                viewModel.fetchMoviesIfNeeded(movies: movies, viewContext: viewContext)
+            }
+        }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
