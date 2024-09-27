@@ -24,12 +24,10 @@ struct PersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
-    // Modo preview para SwiftUI
     static var preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true) // Banco de dados em memória
+        let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         
-        // Adiciona dados de exemplo para visualização no preview
         for i in 0..<5 {
             let movie = Movie(context: viewContext)
             movie.originalTitle = "Title: \(i)"
