@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+struct HomeView: View {
     
     @StateObject var viewModel = ViewModel()
     
@@ -48,6 +48,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    HomeView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
