@@ -9,40 +9,42 @@ import SwiftUI
 import CoreData
 
 class ViewModel: ObservableObject {
+    private func lastUpdateKey(for segment: Sections) -> String {
+        return "lastUpdateDate_\(segment.segmentName)"
+    }
     
-    let lastUpdateKey = "lastUpdateDate"
-    
-    func fetchMoviesIfNeeded(movies: FetchedResults<Movie>, viewContext: NSManagedObjectContext) {
+    func fetchMoviesIfNeeded(segment: Sections, viewContext: NSManagedObjectContext) {
+        let lastUpdateKey = self.lastUpdateKey(for: segment)
         let lastUpdate = UserDefaults.standard.object(forKey: lastUpdateKey) as? Date
         let currentDate = Date()
 
         let updateInterval: TimeInterval = 60 * 60 * 24
-        
+
         if let lastUpdate = lastUpdate, currentDate.timeIntervalSince(lastUpdate) < updateInterval {
-            print("Filmes já estão atualizados.")
+            print("Filmes do segmento \(segment) já estão atualizados.")
             return
         }
 
-        fetchMoviesFromAPI(movies: movies, viewContext: viewContext)
-        UserDefaults.standard.set(currentDate, forKey: lastUpdateKey) // Atualiza a data
+        fetchMoviesFromAPI(segment: segment.segmentName, viewContext: viewContext)
+        UserDefaults.standard.set(currentDate, forKey: lastUpdateKey)
     }
-    
-    private func fetchMoviesFromAPI(movies: FetchedResults<Movie>, viewContext: NSManagedObjectContext) {
-        ServiceManager.shared.getMovie(segment: "popular") { result in
+
+    private func fetchMoviesFromAPI(segment: String, viewContext: NSManagedObjectContext) {
+        ServiceManager.shared.getMovie(segment: segment) { result in
             switch result {
             case .success(let moviesData):
                 for movieData in moviesData {
                     let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "id == %d", movieData.id)
+                    fetchRequest.predicate = NSPredicate(format: "id == %d AND segment == %@", movieData.id, segment)
                     
                     do {
                         let existingMovies = try viewContext.fetch(fetchRequest)
                         
                         if let existingMovie = existingMovies.first {
                             if existingMovie.originalTitle != movieData.originalTitle ||
-                               existingMovie.overview != movieData.overview ||
-                               existingMovie.releaseDate != movieData.releaseDate ||
-                               existingMovie.posterPath != movieData.posterPath {
+                                existingMovie.overview != movieData.overview ||
+                                existingMovie.releaseDate != movieData.releaseDate ||
+                                existingMovie.posterPath != movieData.posterPath {
                                 existingMovie.originalTitle = movieData.originalTitle
                                 existingMovie.overview = movieData.overview
                                 existingMovie.releaseDate = movieData.releaseDate
@@ -57,10 +59,11 @@ class ViewModel: ObservableObject {
                             newMovie.overview = movieData.overview
                             newMovie.releaseDate = movieData.releaseDate
                             newMovie.posterPath = movieData.posterPath
+                            newMovie.segment = segment
                             
                             print("Salvando novo filme: \(newMovie.originalTitle ?? "Sem título")")
                         }
-
+                        
                         try viewContext.save()
                         
                     } catch {
