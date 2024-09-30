@@ -9,25 +9,26 @@ import SwiftUI
 import CoreData
 
 struct HomeView: View {
-    
-    @StateObject var viewModel = ViewModel()
-    
+    @State private var segment = Sections.popular
+    @StateObject private var viewModel = ViewModel()
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(
-        sortDescriptors: [],
-        animation: .default
-    )
-    var movies: FetchedResults<Movie>
+    @FetchRequest private var movies: FetchedResults<Movie>
     
     let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
+    init() {
+        _movies = FetchRequest(
+            entity: Movie.entity(),
+            sortDescriptors: [],
+            predicate: NSPredicate(format: "segment == %@", Sections.popular.segmentName),
+            animation: .default
+        )
+    }
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                Text("Popular")
-                    .font(.title)
-                
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(movies) { movie in
@@ -38,15 +39,29 @@ struct HomeView: View {
                     .padding()
                 }
             }
-        }
-        .onAppear {
-            DispatchQueue.main.async {
-                viewModel.fetchMoviesIfNeeded(movies: movies, viewContext: viewContext)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    ToolBarItemView(segment: $segment)
+                }
             }
         }
+        .onAppear {
+            fetchMovies()
+        }
+        .onChange(of: segment) { newSegment in
+            updateFetchRequest(for: newSegment)
+            fetchMovies()
+        }
+    }
+    
+    private func fetchMovies() {
+        viewModel.fetchMoviesIfNeeded(segment: segment, viewContext: viewContext)
+    }
+    
+    private func updateFetchRequest(for newSegment: Sections) {
+        movies.nsPredicate = NSPredicate(format: "segment == %@", newSegment.segmentName)
     }
 }
-
 #Preview {
     HomeView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
