@@ -9,7 +9,8 @@ import SwiftUI
 
 struct MoviePosterView: View {
     let posterPath: String
-    
+    var width: CGFloat = 100
+    var height: CGFloat = 150
     @State private var image: UIImage? = nil
     
     var body: some View {
@@ -18,7 +19,7 @@ struct MoviePosterView: View {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 150)
+                    .frame(width: width, height: height)
                     .cornerRadius(8)
             } else {
                 ProgressView()
