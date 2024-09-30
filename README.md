@@ -5,9 +5,9 @@
 
 ## 🎨 Screenshots
 
-| Lista de Filmes Populares |
-|:-------------------------:|
-| <img src="https://i.imgur.com/fVYxF3c.png" width="200"/> 
+| Lista de Filmes Populares | Detalhes do Filme |
+|:-------------------------:|:-------------------------:|
+| <img src="https://i.imgur.com/zKpkK6V.png" width="200"/> | <img src="https://i.imgur.com/pMjK2R8.png" width="200"/>
 
 
 ## 📱 Features
