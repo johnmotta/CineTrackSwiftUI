@@ -32,13 +32,21 @@ struct HomeView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(movies) { movie in
-                            MoviePosterView(posterPath: movie.posterPath ?? "")
-                                .frame(height: 150)
+                            
+                            NavigationLink {
+                                MovieDetailView(movieId: Int(movie.id))
+                            } label: {
+                                MoviePosterView(posterPath: movie.posterPath ?? "")
+                                    .frame(height: 150)
+                            }
+
                         }
                     }
                     .padding()
                 }
             }
+            .navigationTitle("\(segment.description) Movies")
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     ToolBarItemView(segment: $segment)
