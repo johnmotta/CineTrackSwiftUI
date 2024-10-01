@@ -14,7 +14,7 @@ struct CineTrackSwiftUIApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainTableView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
