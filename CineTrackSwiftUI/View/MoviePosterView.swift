@@ -9,29 +9,33 @@ import SwiftUI
 
 struct MoviePosterView: View {
     let posterPath: String
-    var width: CGFloat = 100
-    var height: CGFloat = 150
+    let width: CGFloat
+    let height: CGFloat
     @State private var image: UIImage? = nil
     
+    init(posterPath: String, width: CGFloat) {
+        self.posterPath = posterPath
+        self.width = width
+        self.height = width * 1.5
+    }
+    
     var body: some View {
-        VStack {
+        Group {
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: width, height: height)
-                    .cornerRadius(8)
             } else {
                 ProgressView()
-                    .frame(width: 100, height: 150)
-                    .cornerRadius(8)
-                    .onAppear {
-                        loadImage()
-                    }
             }
         }
+        .frame(width: width, height: height)
+        .clipped()
+        .onAppear {
+            loadImage()
+        }
     }
-    
+
     private func loadImage() {
         if let cachedImage = ImageCache.shared.getImage(forKey: posterPath) {
             self.image = cachedImage
@@ -64,4 +68,3 @@ class ImageCache {
         cache.setObject(image, forKey: key as NSString)
     }
 }
-
