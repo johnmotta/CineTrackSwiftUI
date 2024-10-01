@@ -5,9 +5,10 @@
 
 ## 🎨 Screenshots
 
-| Lista de Filmes Populares | Detalhes do Filme |
-|:-------------------------:|:-------------------------:|
-| <img src="https://i.imgur.com/zKpkK6V.png" width="200"/> | <img src="https://i.imgur.com/pMjK2R8.png" width="200"/>
+| Filmes Mais Votados | Buscar Filmes | Detalhes do Filme |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+| <img src="https://i.imgur.com/iuCKwOr.png" width="200"/> | <img src="https://i.imgur.com/Lrvdbkn.png" width="200"/> | <img src="https://i.imgur.com/0KIsn6g.png" width="200"/>
+
 
 
 ## 📱 Features
