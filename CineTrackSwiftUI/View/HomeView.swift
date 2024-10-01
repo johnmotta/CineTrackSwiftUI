@@ -36,7 +36,7 @@ struct HomeView: View {
                             NavigationLink {
                                 MovieDetailView(movieId: Int(movie.id))
                             } label: {
-                                MoviePosterView(posterPath: movie.posterPath ?? "")
+                                MoviePosterView(posterPath: movie.posterPath ?? "", width: CGFloat(100))
                                     .frame(height: 150)
                             }
 
@@ -45,7 +45,7 @@ struct HomeView: View {
                     .padding()
                 }
             }
-            .navigationTitle("\(segment.description) Movies")
+            .navigationTitle(segment.description)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -70,6 +70,7 @@ struct HomeView: View {
         movies.nsPredicate = NSPredicate(format: "segment == %@", newSegment.segmentName)
     }
 }
+
 #Preview {
     HomeView()
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)

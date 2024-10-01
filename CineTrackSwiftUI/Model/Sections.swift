@@ -15,11 +15,11 @@ enum Sections: Int, CaseIterable {
     var description: String {
         switch self {
         case .upcoming:
-            return "Upcoming"
+            return "Por vir"
         case .popular:
             return "Popular"
         case .topRated:
-            return "Top Rated"
+            return "Mais votados"
         }
     }
     
