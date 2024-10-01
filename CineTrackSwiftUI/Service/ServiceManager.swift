@@ -46,7 +46,7 @@ class ServiceManager: MovieProtocol {
 
     func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void) {
         let deviceLanguage = Locale.preferredLanguages.first ?? "en-US"
-        let urlString = "https://api.themoviedb.org/3/movie/\(movieId)?api_key=\(Constants.API)&language=\(deviceLanguage)"
+        let urlString = "\(Constants.baseURL)/3/movie/\(movieId)?api_key=\(Constants.API)&language=\(deviceLanguage)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL(urlString)))
@@ -76,7 +76,7 @@ class ServiceManager: MovieProtocol {
     
     func fetchMovieCast(movieId: Int, completion: @escaping (Result<[Cast], NetworkError>) -> Void) {
         let deviceLanguage = Locale.preferredLanguages.first ?? "en-US"
-        let urlString = "https://api.themoviedb.org/3/movie/\(movieId)/credits?api_key=\(Constants.API)&language=\(deviceLanguage)"
+        let urlString = "\(Constants.baseURL)/3/movie/\(movieId)/credits?api_key=\(Constants.API)&language=\(deviceLanguage)"
         
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL(urlString)))
