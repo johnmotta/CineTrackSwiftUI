@@ -54,16 +54,9 @@ class ServiceManager: ServiceManagerProtocol {
         task.resume()
     }
     
-    func getMovie(segment: String, completion: @escaping (Result<[MovieJSON], NetworkError>) -> Void) {
+    func getMovie(segment: Sections, completion: @escaping (Result<[MovieJSON], NetworkError>) -> Void) {
         let endpoint: String
-        switch segment.lowercased() {
-        case "popular", "upcoming", "top_rated":
-            endpoint = "movie/\(segment)"
-        default:
-            completion(.failure(.invalidURL("Invalid segment: \(segment)")))
-            return
-        }
-        
+        endpoint = "movie/\(segment.description)"
         let additionalQueryItems = [URLQueryItem(name: "page", value: "1")]
         fetchData(endpoint: endpoint, additionalQueryItems: additionalQueryItems) { (result: Result<MoviesResponse, NetworkError>) in
             switch result {

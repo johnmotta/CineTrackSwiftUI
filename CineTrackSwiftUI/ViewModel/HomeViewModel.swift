@@ -25,17 +25,17 @@ class HomeViewModel: ObservableObject {
             return
         }
 
-        fetchMoviesFromAPI(segment: segment.segmentName, viewContext: viewContext)
+        fetchMoviesFromAPI(segment: segment, viewContext: viewContext)
         UserDefaults.standard.set(currentDate, forKey: lastUpdateKey)
     }
 
-    private func fetchMoviesFromAPI(segment: String, viewContext: NSManagedObjectContext) {
+    private func fetchMoviesFromAPI(segment: Sections, viewContext: NSManagedObjectContext) {
         ServiceManager.shared.getMovie(segment: segment) { result in
             switch result {
             case .success(let moviesData):
                 for movieData in moviesData {
                     let fetchRequest: NSFetchRequest<Movie> = Movie.fetchRequest()
-                    fetchRequest.predicate = NSPredicate(format: "id == %d AND segment == %@", movieData.id, segment)
+                    fetchRequest.predicate = NSPredicate(format: "id == %d AND segment == %@", movieData.id, segment.segmentName)
                     
                     do {
                         let existingMovies = try viewContext.fetch(fetchRequest)
@@ -59,7 +59,7 @@ class HomeViewModel: ObservableObject {
                             newMovie.overview = movieData.overview
                             newMovie.releaseDate = movieData.releaseDate
                             newMovie.posterPath = movieData.posterPath
-                            newMovie.segment = segment
+                            newMovie.segment = segment.segmentName
                             
                             print("Salvando novo filme: \(newMovie.originalTitle ?? "Sem título")")
                         }

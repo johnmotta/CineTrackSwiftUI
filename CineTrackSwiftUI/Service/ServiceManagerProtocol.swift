@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ServiceManagerProtocol {
-    func getMovie(segment: String, completion: @escaping (Result<[MovieJSON], NetworkError>) -> Void)
+    func getMovie(segment: Sections, completion: @escaping (Result<[MovieJSON], NetworkError>) -> Void)
     func fetchMovieDetails(movieId: Int, completion: @escaping (Result<MovieDetail, NetworkError>) -> Void)
     func fetchMovieCast(movieId: Int, completion: @escaping (Result<[Cast], NetworkError>) -> Void)
     func search(with query: String, completion: @escaping (Result<[MovieJSON], NetworkError>) -> Void)
