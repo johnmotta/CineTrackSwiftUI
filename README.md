@@ -5,15 +5,16 @@
 
 ## 🎨 Screenshots
 
-| Filmes Mais Votados | Buscar Filmes | Detalhes do Filme |
-|:-------------------------:|:-------------------------:|:-------------------------:|
-| <img src="https://i.imgur.com/iuCKwOr.png" width="200"/> | <img src="https://i.imgur.com/Lrvdbkn.png" width="200"/> | <img src="https://i.imgur.com/0KIsn6g.png" width="200"/>
+| Filmes Mais Votados | Buscar Filmes | Detalhes do Filme | Trailer do Filme
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+| <img src="https://i.imgur.com/HiEct2D.png" width="200"/> | <img src="https://i.imgur.com/Lrvdbkn.png" width="200"/> | <img src="https://i.imgur.com/e9yLkUd.png" width="200"/> | <img src="https://i.imgur.com/xmOGViJ.png" width="200"/>
 
 
 
 ## 📱 Features
 
 - Exibição de filmes populares obtidos da API TMDB.
+- Exibição de trailer do filme.
 - Persistência de dados de filmes usando `Core Data` para reduzir chamadas desnecessárias à API.
 - Armazenamento em cache de imagens de pôsteres de filmes usando `NSCache`.
 - Interface moderna e fluida utilizando SwiftUI.
