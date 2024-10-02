@@ -10,6 +10,8 @@ import SwiftUI
 struct MovieDetailView: View {
     @State private var movieDetail: MovieDetail?
     @State private var movieCast: [Cast] = []
+    @Environment(\.colorScheme) var colorScheme
+    @State private var showingSheet = false
     
     let movieId: Int
     
@@ -37,12 +39,28 @@ struct MovieDetailView: View {
                     }
                     .padding(.horizontal)
                     .lineLimit(2)
+                    
+                    HStack {
+                        Spacer()
+                        Button("Assista o trailer do filme") {
+                            showingSheet.toggle()
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 6)
+                        .accentColor(colorScheme == .dark ? .black : .white)
+                        .background(colorScheme == .dark ? .white : .black)
+                        .opacity(0.8)
+                        .sheet(isPresented: $showingSheet) {
+                            YoutubeTrailerView(title: movieDetail.title)
+                        }
+                        Spacer()
+                    }
                     ScrollView {
 
                     Divider()
                     
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
+                        HStack(alignment: .top, spacing: 16) {
                             ForEach(movieCast.prefix(10), id: \.name) { cast in
                                 VStack {
                                     if let profilePath = cast.profilePath {
@@ -60,7 +78,6 @@ struct MovieDetailView: View {
                                                 .cornerRadius(8)
                                         }
                                     } else {
-                                        // Caso o ator não tenha imagem
                                         Color.gray
                                             .frame(width: 100, height: 150)
                                             .cornerRadius(8)
