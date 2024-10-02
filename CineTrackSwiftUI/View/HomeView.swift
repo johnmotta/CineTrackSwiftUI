@@ -10,7 +10,7 @@ import CoreData
 
 struct HomeView: View {
     @State private var segment = Sections.popular
-    @StateObject private var viewModel = ViewModel()
+    @StateObject private var viewModel = HomeViewModel()
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest private var movies: FetchedResults<Movie>

@@ -1,5 +1,5 @@
 //
-//  ViewModel.swift
+//  HomeViewModel.swift
 //  CineTrackSwiftUI
 //
 //  Created by John on 26/09/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CoreData
 
-class ViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     private func lastUpdateKey(for segment: Sections) -> String {
         return "lastUpdateDate_\(segment.segmentName)"
     }
